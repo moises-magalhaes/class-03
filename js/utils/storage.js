@@ -6,7 +6,8 @@ export function saveToken(token) {
 }
 
 export function getToken() {
-	getFromStorage(tokenKey);
+	//the mistake was here there was no return
+	return getFromStorage(tokenKey);
 }
 
 export function saveUser(user) {

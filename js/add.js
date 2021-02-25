@@ -26,7 +26,7 @@ function submitForm(event) {
 	if (
 		nameValue.length === 0 ||
 		priceValue.length === 0 ||
-		isNaN() ||
+		isNaN(priceValue) ||
 		descriptionValue.length === 0
 	) {
 		return displayMessage(
@@ -39,13 +39,16 @@ function submitForm(event) {
 }
 
 async function addProduct(name, price, description) {
-	const url = baseUrl + "products";
+	const url = baseUrl + "products/";
+
 	const data = JSON.stringify({
 		name: name,
 		price: price,
 		description: description,
 	});
+
 	const token = getToken();
+
 	const options = {
 		method: "POST",
 		body: data,
