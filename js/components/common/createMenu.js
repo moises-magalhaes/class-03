@@ -11,7 +11,11 @@ export default function createMenu() {
 	}"></a>`;
 
 	if (username) {
-		authLink = `<span>Hi ${username}</span>`;
+		authLink = ` <a href="add.html" class= "${
+			pathname === "/moises-magalhaes-js2-ma3/add.html" ? "active" : ""
+		}">Add Product</a>
+
+		<span>Hi ${username}</span>`;
 	}
 
 	//console.log(username);
@@ -19,7 +23,7 @@ export default function createMenu() {
 
 	container.innerHTML = `<div class="menu">
                                 <a href="index.html" class= "${
-																	pathname ===
+																	pathname === "/" ||
 																	"/moises-magalhaes-js2-ma3/index.html"
 																		? "active"
 																		: ""
