@@ -30,12 +30,5 @@ export default function createMenu() {
 																}">Home</a>
 
                                                                 ${authLink}
-
-                               <!-------<a href="login.html" class= "${
-																	pathname ===
-																	"/moises-magalhaes-js2-ma3/login.html"
-																		? "active"
-																		: ""
-																}">Login</a>------->
                             </div>`;
 }

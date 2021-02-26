@@ -17,7 +17,7 @@ createMenu();
 		// throw "custom message";
 
 		json.forEach(function (product) {
-			container.innerHTML += `<a class="product" href="detail.html?id=${product.id}">
+			container.innerHTML += `<a class="product" href="edit.html?id=${product.id}">
                                         <h4> ${product.name}</h4>
                                         <p>Price: ${product.price}</p>
                                     </a>`;

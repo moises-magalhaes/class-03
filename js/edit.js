@@ -1,15 +1,47 @@
+import { baseUrl } from "./settings/api.js";
 import displayMessage from "./components/common/displayMessage.js";
 import createMenu from "./components/common/createMenu.js";
 import { getToken } from "./utils/storage.js";
-import { baseUrl } from "./settings/api.js";
 
 createMenu();
+
+const queryString = document.location.search;
+const params = new URLSearchParams(queryString);
+const id = params.get("id");
+
+//to edit the product i need to click in the product from the homepage
+if (!id) {
+	document.location.href = "/";
+}
+
+const productUrl = baseUrl + "products/" + id;
 
 const form = document.querySelector("form");
 const name = document.querySelector("#name");
 const price = document.querySelector("#price");
 const description = document.querySelector("#description");
+const idInput = document.querySelector("#id");
 const message = document.querySelector(".message-container");
+const loading = document.querySelector(".loading");
+
+(async function () {
+	try {
+		const response = await fetch(productUrl);
+		const details = await response.json();
+
+		name.value = details.name;
+		price.value = details.price;
+		description.value = details.description;
+		idInput.value = details.id;
+
+		console.log(details);
+	} catch (error) {
+		console.log(error);
+	} finally {
+		loading.style.display = "none";
+		form.style.display = "block";
+	}
+})();
 
 form.addEventListener("submit", submitForm);
 
@@ -21,6 +53,7 @@ function submitForm(event) {
 	const nameValue = name.value.trim();
 	const priceValue = parseFloat(price.value);
 	const descriptionValue = description.value.trim();
+	const idValue = idInput.value;
 
 	console.log("priceValue", priceValue);
 	if (
@@ -35,13 +68,12 @@ function submitForm(event) {
 			".message-container"
 		);
 	}
-	addProduct(nameValue, priceValue, descriptionValue);
+
+	updateProduct(nameValue, priceValue, descriptionValue, idValue);
 }
 
-async function addProduct(name, price, description) {
-	//before -> 	const url = baseUrl + "products/";
-	const url = baseUrl + "products";
-
+async function updateProduct(name, price, description, id) {
+	const url = baseUrl + "products/" + id;
 	const data = JSON.stringify({
 		name: name,
 		price: price,
@@ -51,7 +83,7 @@ async function addProduct(name, price, description) {
 	const token = getToken();
 
 	const options = {
-		method: "POST",
+		method: "PUT",
 		body: data,
 		headers: {
 			"Content-Type": "application/json",
@@ -60,20 +92,20 @@ async function addProduct(name, price, description) {
 	};
 
 	try {
+		//the error was before -> const response = await fetch(productUrl);
+
 		const response = await fetch(url, options);
 		const json = await response.json();
 
-		if (json.created_at) {
-			displayMessage("success", "Product created", ".message-container");
-			form.reset();
-		}
+		console.log(json);
 
+		if (json.updated_at) {
+			displayMessage("success", "Product updated", ".message-container");
+		}
 		if (json.error) {
 			displayMessage("error", json.message, ".message-container");
 		}
-		console.log(json);
 	} catch (error) {
 		console.log(error);
-		displayMessage("error", "An error occurred", ".message-container");
 	}
 }
