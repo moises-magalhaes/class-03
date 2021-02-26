@@ -62,8 +62,17 @@ async function addProduct(name, price, description) {
 		const response = await fetch(url, options);
 		const json = await response.json();
 
+		if (json.created_at) {
+			displayMessage("success", "Product created", ".message-container");
+			form.reset();
+		}
+
+		if (json.error) {
+			displayMessage("error", json.message, ".message-container");
+		}
 		console.log(json);
 	} catch (error) {
 		console.log(error);
+		displayMessage("error", "An error occurred", ".message-container");
 	}
 }
