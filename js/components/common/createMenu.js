@@ -8,7 +8,7 @@ export default function createMenu() {
 
 	let authLink = `<a href="login.html" class="${
 		pathname === "/moises-magalhaes-js2-ma3/login.html" ? "active" : ""
-	}"></a>`;
+	}">Login</a>`;
 
 	if (username) {
 		authLink = ` <a href="add.html" class= "${
